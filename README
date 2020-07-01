@@ -1,6 +1,18 @@
+Jakubs custom dwm build
+=======================
+
+Patches
+-------
+* fullgabs
+* fibonacci
+
+Plus some custom modifications.
+
+
 dwm - dynamic window manager
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
+
 
 
 Requirements
@@ -25,6 +37,11 @@ Add the following line to your .xinitrc to start dwm using startx:
 
     exec dwm
 
+Or if you are using a dm for choosing xsession, create a file dwm.desktop in '/usr/share/xsessions/'.
+Example:
+https://github.com/develengine/dotfiles2.0/blob/master/dwm.desktop
+
+
 In order to connect dwm to a specific display, make sure that
 the DISPLAY environment variable is set correctly, e.g.:
 
@@ -40,6 +57,9 @@ like this in your .xinitrc:
     	sleep 1
     done &
     exec dwm
+
+Or using Jakubs dwm-bar:
+https://github.com/develengine/dwm-bar
 
 
 Configuration
