@@ -2,6 +2,7 @@
 
 ## Patches
 - fibonacci
+- useless gaps
 
 Plus some custom modifications.
 
