@@ -1,7 +1,6 @@
 # Jakubs custom dwm build
 
 ## Patches
-- fullgaps
 - fibonacci
 
 Plus some custom modifications.

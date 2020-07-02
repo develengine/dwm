@@ -107,10 +107,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
 	{ MODKEY|ShiftMask,             XK_c,            quit,           {0} },
-        // gaps
-        { MODKEY,                       XK_minus,        setgaps,        {.i = -1 } },
-        { MODKEY,                       XK_equal,        setgaps,        {.i = +1 } },
-        { MODKEY|ShiftMask,             XK_equal,        setgaps,        {.i = 0  } },
         // dwm bar
         { MODKEY,                       XK_bracketright, spawndwmbar,    {.v = volcmdup } },
         { MODKEY,                       XK_bracketleft,  spawndwmbar,    {.v = volcmddown } },
