@@ -5,6 +5,7 @@
 - useless gaps
 - hide vacant tags
 - cyclelayouts
+- centered window name
 
 Plus some custom modifications.
 
