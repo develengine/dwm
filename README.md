@@ -3,6 +3,7 @@
 ## Patches
 - fibonacci
 - useless gaps
+- hide vacant tags
 
 Plus some custom modifications.
 
