@@ -45,6 +45,7 @@ static const Layout layouts[] = {
         { "[\\]",     dwindle },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+        { NULL,       NULL },
 };
 
 /* key definitions */
@@ -106,7 +107,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                            6)
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
-	{ MODKEY|ShiftMask,             XK_c,            quit,           {0} },
+        { MODKEY|ShiftMask,             XK_c,            quit,           {0} },
+        // cycle layout
+        { MODKEY|ControlMask,           XK_comma,        cyclelayout,    {.i = -1 } },
+        { MODKEY|ControlMask,           XK_period,       cyclelayout,    {.i = +1 } },
         // dwm bar
         { MODKEY,                       XK_bracketright, spawndwmbar,    {.v = volcmdup } },
         { MODKEY,                       XK_bracketleft,  spawndwmbar,    {.v = volcmddown } },

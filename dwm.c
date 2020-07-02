@@ -157,13 +157,14 @@ static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
 static Monitor *createmon(void);
+static void cyclelayout(const Arg *arg); /* cycle layout */
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
 static void detachstack(Client *c);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
-static void dwindle(Monitor *mon); // fibonacci
+static void dwindle(Monitor *mon); /* fibonacci */
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void focus(Client *c);
@@ -208,8 +209,8 @@ static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigchld(int unused);
 static void spawn(const Arg *arg);
-static void spawndwmbar(const Arg *arg); // dwm bar
-static void spiral(Monitor *mon); // fibonacci
+static void spawndwmbar(const Arg *arg); /* dwm bar */
+static void spiral(Monitor *mon); /* fibonacci */
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *);
@@ -652,6 +653,25 @@ createmon(void)
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
 	return m;
 }
+
+void
+cyclelayout(const Arg *arg)
+{
+       Layout *l;
+       for(l = (Layout *)layouts; l != selmon->lt[selmon->sellt]; l++);
+       if(arg->i > 0) {
+               if(l->symbol && (l + 1)->symbol)
+                       setlayout(&((Arg) { .v = (l + 1) }));
+               else
+                       setlayout(&((Arg) { .v = layouts }));
+       } else {
+               if(l != layouts && (l - 1)->symbol)
+                       setlayout(&((Arg) { .v = (l - 1) }));
+               else
+                       setlayout(&((Arg) { .v = &layouts[LENGTH(layouts) - 2] }));
+       }
+}
+
 
 void
 destroynotify(XEvent *e)

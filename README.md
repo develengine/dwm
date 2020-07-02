@@ -4,6 +4,7 @@
 - fibonacci
 - useless gaps
 - hide vacant tags
+- cyclelayouts
 
 Plus some custom modifications.
 
