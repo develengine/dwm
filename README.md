@@ -6,6 +6,7 @@
 - hide vacant tags
 - cyclelayouts
 - centered window name
+- alwayscenter
 
 Plus some custom modifications.
 
