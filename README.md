@@ -2,11 +2,12 @@
 
 ## Patches
 - fibonacci
+- centered master
+- cycle layouts
 - full gaps
 - hide vacant tags
-- cyclelayouts
 - centered window name
-- alwayscenter
+- always center
 
 Plus some custom modifications.
 
