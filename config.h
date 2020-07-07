@@ -83,7 +83,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return,       zoom,           {0} },
 	{ MODKEY,                       XK_Tab,          view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,            killclient,     {0} },
-        // layouts
+        /* layouts */
 	{ MODKEY,                       XK_t,            setlayout,      {.v = &layouts[0]} },
         { MODKEY,                       XK_r,            setlayout,      {.v = &layouts[1]} },
         { MODKEY|ShiftMask,             XK_r,            setlayout,      {.v = &layouts[2]} },
@@ -108,10 +108,14 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
         { MODKEY|ShiftMask,             XK_c,            quit,           {0} },
-        // cycle layout
+        /* gaps */
+        { MODKEY,                       XK_minus,        gapsize,        {.i = -1 } },
+        { MODKEY|ShiftMask,             XK_equal,        gapsize,        {.i =  0 } },
+        { MODKEY,                       XK_equal,        gapsize,        {.i = +1 } },
+        /* cycle layout */
         { MODKEY|ControlMask,           XK_comma,        cyclelayout,    {.i = -1 } },
         { MODKEY|ControlMask,           XK_period,       cyclelayout,    {.i = +1 } },
-        // dwm bar
+        /* dwm bar */
         { MODKEY,                       XK_bracketright, spawndwmbar,    {.v = volcmdup } },
         { MODKEY,                       XK_bracketleft,  spawndwmbar,    {.v = volcmddown } },
 };

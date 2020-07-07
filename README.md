@@ -2,7 +2,7 @@
 
 ## Patches
 - fibonacci
-- useless gaps
+- full gaps
 - hide vacant tags
 - cyclelayouts
 - centered window name
