@@ -1,4 +1,4 @@
-# Jakubs custom dwm build
+# Jakub's custom dwm build
 
 ## Patches
 - fibonacci
@@ -54,7 +54,7 @@ do
 done &
 exec dwm
 ```
-Or using Jakubs dwm-bar:
+Or using my dwm-bar:
 https://github.com/develengine/dwm-bar
 
 
