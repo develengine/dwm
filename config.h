@@ -65,7 +65,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]   = { "dmenu_run", "-l", "20", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]    = { "st", "-f", terminalfont, "-t", "Terminal", NULL };
-static const char *poweroff[]   = { "shutdown", "now", NULL };
+// static const char *poweroff[]   = { "shutdown", "now", NULL };
+static const char *poweroff[]   = { "sh", "-c", "[ `printf \"yes\nno\" | dmenu -p \"shutdown:\" ` = \"yes\" ] && shutdown now", NULL };
 /* dwm bar commands */
 static const char *volcmdup[]   = { "amixer", "-D", "pulse", "sset", "Master", "5%+", NULL };
 static const char *volcmddown[] = { "amixer", "-D", "pulse", "sset", "Master", "5%-", NULL };
