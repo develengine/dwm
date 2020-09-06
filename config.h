@@ -28,9 +28,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            0,           -1 },
-	{ "Firefox",  NULL,       NULL,       0,       0,           -1 },
+	/* class      instance    title          tags mask     isfloating   monitor */
+	{ "Gimp",     NULL,       NULL,          0,            0,           -1 },
+	{ "Firefox",  NULL,       NULL,          0,            0,           -1 },
+        { NULL,       NULL,       "Engine-DBG",  1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -123,6 +124,18 @@ static Key keys[] = {
         { MODKEY,                       XK_bracketright, spawndwmbar,    {.v = volcmdup } },
         { MODKEY,                       XK_bracketleft,  spawndwmbar,    {.v = volcmddown } },
 };
+
+void onstart() {
+    const char *onstartcmd[] = { "onstart", NULL };
+    const Arg startup = {.v = onstartcmd };
+    spawn(&startup);
+}
+
+void onexit() {
+    const char *onexitcmd[] = { "onexit", NULL };
+    const Arg onexit = {.v = onexitcmd };
+    spawn(&onexit);
+}
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
