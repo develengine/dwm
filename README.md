@@ -8,6 +8,7 @@
 - hide vacant tags
 - centered window name
 - always center
+- rotate stack
 
 Plus some custom modifications.
 
