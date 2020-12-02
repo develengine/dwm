@@ -168,6 +168,8 @@ static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
 static void dwindle(Monitor *mon); /* fibonacci */
+static void enqueue(Client *c); /* rotate stack */
+static void enqueuestack(Client *c);
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void focus(Client *c);
@@ -199,6 +201,7 @@ static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
+static void rotatestack(const Arg *arg); /* rotate stack */
 static void run(void);
 static void scan(void);
 static int sendevent(Client *c, Atom proto);
@@ -891,6 +894,28 @@ drawbars(void)
 }
 
 void
+enqueue(Client *c)
+{
+	Client *l;
+	for (l = c->mon->clients; l && l->next; l = l->next);
+	if (l) {
+		l->next = c;
+		c->next = NULL;
+	}
+}
+
+void
+enqueuestack(Client *c)
+{
+	Client *l;
+	for (l = c->mon->stack; l && l->snext; l = l->snext);
+	if (l) {
+		l->snext = c;
+		c->snext = NULL;
+	}
+}
+
+void
 enternotify(XEvent *e)
 {
 	Client *c;
@@ -920,70 +945,80 @@ expose(XEvent *e)
 }
 
 void
-fibonacci(Monitor *mon, int s) {
-       unsigned int i, n, nx, ny, nw, nh;
-       Client *c;
-
-       for(n = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next), n++);
-       if(n == 0)
-               return;
-       
-       nx = mon->wx;
-       ny = 0;
-       nw = mon->ww;
-       nh = mon->wh;
-       
-       for(i = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next)) {
-               if((i % 2 && nh / 2 > 2 * c->bw)
-                  || (!(i % 2) && nw / 2 > 2 * c->bw)) {
-                       if(i < n - 1) {
-                               if(i % 2)
-                                       nh /= 2;
-                               else
-                                       nw /= 2;
-                               if((i % 4) == 2 && !s)
-                                       nx += nw;
-                               else if((i % 4) == 3 && !s)
-                                       ny += nh;
-                       }
-                       if((i % 4) == 0) {
-                               if(s)
-                                       ny += nh;
-                               else
-                                       ny -= nh;
-                       }
-                       else if((i % 4) == 1)
-                               nx += nw;
-                       else if((i % 4) == 2)
-                               ny += nh;
-                       else if((i % 4) == 3) {
-                               if(s)
-                                       nx += nw;
-                               else
-                                       nx -= nw;
-                       }
-                       if(i == 0)
-                       {
-                               if(n != 1)
-                                       nw = mon->ww * mon->mfact;
-                               ny = mon->wy;
-                       }
-                       else if(i == 1)
-                               nw = mon->ww - nw;
-                       i++;
-               }
-               resize(c, nx, ny, nw - 2 * c->bw, nh - 2 * c->bw, False);
-       }
+fibonacci(Monitor *mon, int s)
+{
+        unsigned int i, n, nx, ny, nw, nh;
+        unsigned int gx, xof, yof, hof, xm, ym;
+        Client *c;
+ 
+        for(n = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next), n++);
+        if(n == 0)
+                return;
+        
+        nx = mon->wx;
+        ny = 0;
+        nw = mon->ww;
+        nh = mon->wh;
+        gx = mon->gappx;
+        
+        for(i = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next)) {
+                if((i % 2 && nh / 2 > 2 * c->bw)
+                   || (!(i % 2) && nw / 2 > 2 * c->bw)) {
+                        if(i < n - 1) {
+                                if(i % 2)
+                                        nh /= 2;
+                                else
+                                        nw /= 2;
+                                if((i % 4) == 2 && !s)
+                                        nx += nw;
+                                else if((i % 4) == 3 && !s)
+                                        ny += nh;
+                        }
+                        if((i % 4) == 0) {
+                                if(s)
+                                        ny += nh;
+                                else
+                                        ny -= nh;
+                        }
+                        else if((i % 4) == 1)
+                                nx += nw;
+                        else if((i % 4) == 2)
+                                ny += nh;
+                        else if((i % 4) == 3) {
+                                if(s)
+                                        nx += nw;
+                                else
+                                        nx -= nw;
+                        }
+                        if(i == 0)
+                        {
+                                if(n != 1)
+                                        nw = mon->ww * mon->mfact;
+                                ny = mon->wy;
+                        }
+                        else if(i == 1)
+                                nw = mon->ww - nw;
+                        i++;
+                }
+ 
+                xof = i == 1 ? gx : 0;
+                yof = i < 3 ? gx : 0;
+                xm = i == 1 ? 2 : 1;
+                ym = i < 3 ? 2 : 1;
+                resize(c, nx + xof, ny + yof, nw - 2 * c->bw - gx * xm, nh - 2 * c->bw - gx * ym, False);
+        }
 }
 
 void
-dwindle(Monitor *mon) {
-       fibonacci(mon, 1);
+dwindle(Monitor *mon)
+{
+        fibonacci(mon, 1);
 }
 
 void
-spiral(Monitor *mon) {
-       fibonacci(mon, 0);
+spiral(Monitor *mon)
+{
+        fibonacci(mon, 0);
 }
 
 
@@ -1585,6 +1620,39 @@ restack(Monitor *m)
 	}
 	XSync(dpy, False);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
+}
+
+void
+rotatestack(const Arg *arg)
+{
+	Client *c = NULL, *f;
+
+	if (!selmon->sel)
+		return;
+	f = selmon->sel;
+
+	if (arg->i > 0) {
+		for (c = nexttiled(selmon->clients); c && nexttiled(c->next); c = nexttiled(c->next));
+		if (c){
+			detach(c);
+			attach(c);
+			detachstack(c);
+			attachstack(c);
+		}
+	} else {
+		if ((c = nexttiled(selmon->clients))){
+			detach(c);
+			enqueue(c);
+			detachstack(c);
+			enqueuestack(c);
+		}
+	}
+	if (c){
+		arrange(selmon);
+		unfocus(f, 1);
+                focus(f);
+		restack(selmon);
+	}
 }
 
 void
