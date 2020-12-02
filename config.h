@@ -125,8 +125,11 @@ static Key keys[] = {
         { MODKEY,                       XK_bracketright, spawndwmbar,    {.v = volcmdup } },
         { MODKEY,                       XK_bracketleft,  spawndwmbar,    {.v = volcmddown } },
         /* rotate stack */
-        { MODKEY|ShiftMask,             XK_j,            rotatestack,    {.i = +1 } },
-        { MODKEY|ShiftMask,             XK_k,            rotatestack,    {.i = -1 } },
+        { MODKEY|ControlMask,             XK_j,            rotatestack,    {.i = +1 } },
+        { MODKEY|ControlMask,             XK_k,            rotatestack,    {.i = -1 } },
+        /* move stack */
+        { MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+        { MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 };
 
 void onstart() {

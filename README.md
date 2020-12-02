@@ -9,6 +9,7 @@
 - centered window name
 - always center
 - rotate stack
+- move stack
 
 Plus some custom modifications.
 
