@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 10;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -14,11 +14,16 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 /* static const char col_cyan[]        = "#005577"; */
-static const char col_yellow[]      = "#fbe000";
+/* static const char col_yellow[]      = "#fbe000"; */
+static const char col_main[]        = "#238636";
+static const char col_scnd[]        = "#0d1117";
+static const char col_main_comp[]   = "#ffffff";
+static const char col_scnd_comp[]   = "#b5bebf";
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray1, col_yellow,  col_yellow  },
+	/*               fg             bg        border   */
+	[SchemeNorm] = { col_scnd_comp, col_scnd, col_main },
+	[SchemeSel]  = { col_main_comp, col_main, col_main_comp },
 };
 
 /* tagging */
@@ -65,9 +70,13 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run", "-l", "20", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_yellow, "-sf", col_gray1, NULL };
+static const char *dmenucmd[]   = { "dmenu_run", "-l", "20", "-m", dmenumon,
+        "-fn", dmenufont,
+        "-nb", col_scnd, "-nf", col_scnd_comp,
+        "-sb", col_main, "-sf", col_main_comp, NULL };
 static const char *termcmd[]    = { "st", "-f", terminalfont, "-t", "Terminal", NULL };
-static const char *poweroff[]   = { "sh", "-c", "[ `printf \"yes\nno\" | dmenu -p \"shutdown:\" ` = \"yes\" ] && shutdown now", NULL };
+static const char *poweroff[]   = { "sh", "-c",
+    "[ `printf \"yes\nno\" | dmenu -p \"shutdown:\" ` = \"yes\" ] && shutdown now", NULL };
 /* dwm bar commands */
 static const char *volcmdup[]   = { "amixer", "-D", "pulse", "sset", "Master", "5%+", NULL };
 static const char *volcmddown[] = { "amixer", "-D", "pulse", "sset", "Master", "5%-", NULL };
